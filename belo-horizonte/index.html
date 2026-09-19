@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<!--
+  ============================================================================
+  STUB DE EDIÇÃO — Belo Horizonte
+  Ao copiar esta pasta para uma cidade nova, troque os pontos marcados
+  com "TROCAR" abaixo. São 3 blocos:
+    1. <title>, <meta description>, <link canonical> e as tags og:
+    2. o bloco application/ld+json (data, local, organizador, e-mail, ingresso)
+    3. o <noscript> no fim do arquivo
+  O slug NÃO precisa ser declarado: ele vem do nome da pasta.
+  O resto da página (cotas, contatos, redes, trilhas) vem de dados.js
+  e NÃO precisa ser tocado aqui.
+  ============================================================================
+-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07050C">
+<!-- TROCAR 1: metadados desta cidade -->
+<title>AWS Student Community Day Belo Horizonte — 14 de novembro de 2026</title>
+<meta name="description" content="Um dia de computação em nuvem na PUC Minas Coração Eucarístico, em Belo Horizonte, no sábado 14 de novembro de 2026, das 9h às 17h. Ingressos no Sympla e chamada de palestras aberta até 10 de outubro.">
+<link rel="canonical" href="https://awsstudentcommunitydays.com.br/belo-horizonte/">
+
+<meta property="og:type" content="event">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="AWS Student Community Days Brasil">
+<meta property="og:url" content="https://awsstudentcommunitydays.com.br/belo-horizonte/">
+<meta property="og:title" content="AWS Student Community Day Belo Horizonte 2026">
+<meta property="og:description" content="14 de novembro de 2026, PUC Minas Coração Eucarístico. Duas trilhas, palestras de 35 minutos, feito por estudantes para estudantes.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307050C'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23C4B5FD' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%23E879F9'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&display=swap">
+<link rel="stylesheet" href="../styles.css">
+
+<!-- TROCAR 2: dados estruturados. O Google lê isto literalmente, então data,
+     local e organizador errados viram informação errada na busca.
+     O e-mail foi deixado FORA de propósito: ele vive em dados.js, e duplicá-lo
+     aqui faria uma pasta copiada apontar contato para a cidade errada. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Event",
+  "name": "AWS Student Community Day Belo Horizonte",
+  "startDate": "2026-11-14T09:00:00-03:00",
+  "endDate": "2026-11-14T17:00:00-03:00",
+  "eventStatus": "https://schema.org/EventScheduled",
+  "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+  "location": {
+    "@type": "Place",
+    "name": "PUC Minas — Coração Eucarístico, Teatro, Prédio 43",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Rua Dom José Gaspar, 500",
+      "addressLocality": "Belo Horizonte",
+      "addressRegion": "MG",
+      "addressCountry": "BR"
+    }
+  },
+  "organizer": {
+    "@type": "Organization",
+    "name": "AWS Student Builder Group PUC Minas"
+  },
+  "url": "https://awsstudentcommunitydays.com.br/belo-horizonte/",
+  "offers": {
+    "@type": "Offer",
+    "url": "https://www.sympla.com.br/evento/aws-student-community-day-belo-horizonte/3554710",
+    "availability": "https://schema.org/InStock"
+  }
+}
+</script>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="cabecalho">
+  <div class="faixa cabecalho-linha">
+    <a class="marca" href="../" aria-label="AWS Student Community Days Brasil — início">
+      <span class="marca-ponto" aria-hidden="true"></span>
+      <span class="marca-texto">
+        AWS Student Community Days
+        <span class="marca-pais">Brasil</span>
+      </span>
+    </a>
+    <nav class="menu" aria-label="Seções desta edição">
+      <a href="#edicao">A edição</a>
+      <a href="#palestrar">Palestrar</a>
+      <a href="#patrocinio">Patrocinar</a>
+      <a href="#contato">Contato</a>
+      <a class="botao botao-primario botao-mini" id="cta-cabecalho" href="#edicao">Garantir ingresso</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ── Capa da cidade ────────────────────────────────────────── -->
+  <section class="capa" id="topo">
+    <div class="faixa capa-grade">
+      <div class="capa-texto">
+        <p class="capa-chamada">
+          <a class="voltar" href="../">Todas as edições</a>
+        </p>
+        <h1 class="capa-titulo">
+          <span class="capa-titulo-evento" id="capa-cidade">Belo Horizonte</span>
+          <span class="capa-titulo-cidade" id="capa-uf">Minas Gerais</span>
+        </h1>
+        <p class="capa-resumo" id="capa-resumo"></p>
+        <p class="capa-quando" id="capa-quando"></p>
+        <div class="capa-acoes" id="capa-acoes"></div>
+      </div>
+
+      <figure class="mapa mapa-cidade">
+        <div class="mapa-palco" id="mapa-palco"></div>
+        <figcaption class="mapa-legenda">Minas Gerais, Brasil.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ── Faixa de fatos ────────────────────────────────────────── -->
+  <div class="barra">
+    <div class="faixa barra-linha" id="barra"></div>
+  </div>
+
+  <!-- ── A edição ──────────────────────────────────────────────── -->
+  <section class="secao" id="edicao" aria-labelledby="edicao-titulo">
+    <div class="faixa">
+      <div class="secao-topo">
+        <h2 class="secao-titulo" id="edicao-titulo">O encontro</h2>
+        <p class="secao-intro" id="edicao-intro"></p>
+      </div>
+      <div class="edicao-grade" id="edicao-grade"></div>
+    </div>
+  </section>
+
+  <!-- ── Chamada de palestras ──────────────────────────────────── -->
+  <section class="secao secao-alt" id="palestrar" aria-labelledby="palestrar-titulo">
+    <div class="faixa">
+      <div class="secao-topo">
+        <h2 class="secao-titulo" id="palestrar-titulo">Suba no palco</h2>
+        <p class="secao-intro">
+          A chamada de palestras é aberta a todo mundo: de quem nunca falou em público e tem
+          um projeto de faculdade para mostrar, a quem já trabalha com nuvem há anos.
+          Escolhemos pelo valor para quem assiste, não pelo currículo de quem apresenta.
+        </p>
+      </div>
+      <div class="palestrar-grade">
+        <div class="trilhas" id="trilhas"></div>
+        <aside class="cfp" id="cfp"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Patrocínio ────────────────────────────────────────────── -->
+  <section class="secao patrocinio" id="patrocinio" aria-labelledby="patrocinio-titulo">
+    <div class="faixa">
+      <div class="secao-topo secao-topo-duplo">
+        <div>
+          <h2 class="secao-titulo" id="patrocinio-titulo">Patrocine esta edição</h2>
+          <p class="secao-intro">
+            Um auditório cheio de estudantes de computação que estão escolhendo agora
+            as ferramentas e as empresas com que querem trabalhar. Patrocinar é como
+            a gente mantém o evento acessível e é como a sua marca chega neles primeiro.
+          </p>
+        </div>
+        <div class="patrocinio-chamada" id="patrocinio-chamada"></div>
+      </div>
+      <div class="cotas" id="cotas"></div>
+      <div class="vitrine" id="vitrine"></div>
+    </div>
+  </section>
+
+  <!-- ── Contato ───────────────────────────────────────────────── -->
+  <section class="secao secao-alt" id="contato" aria-labelledby="contato-titulo">
+    <div class="faixa">
+      <div class="secao-topo">
+        <h2 class="secao-titulo" id="contato-titulo">Falar com a organização</h2>
+        <p class="secao-intro">
+          Dúvida sobre ingresso, acessibilidade do local, palestra ou patrocínio?
+          Escreva para a gente.
+        </p>
+      </div>
+      <div class="contato-grade" id="contato-grade"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="faixa rodape-grade">
+    <div class="rodape-marca">
+      <span class="marca-ponto" aria-hidden="true"></span>
+      <p class="rodape-nome">AWS Student Community Days Brasil</p>
+      <p class="rodape-nota">Edição de Belo Horizonte, organizada pelo AWS Student Builder Group PUC Minas.</p>
+    </div>
+    <nav class="rodape-links" aria-label="Navegação">
+      <p class="rodape-rotulo">Navegar</p>
+      <a href="../">Todas as edições</a>
+      <a href="#palestrar">Chamada de palestras</a>
+      <a href="#patrocinio">Patrocinar</a>
+    </nav>
+    <nav class="rodape-links" id="rodape-contato" aria-label="Contato e redes" hidden>
+      <p class="rodape-rotulo">Contato</p>
+    </nav>
+  </div>
+  <div class="faixa rodape-fim">
+    <p>Evento organizado pela comunidade. Não é um evento oficial da Amazon Web Services.</p>
+    <p id="rodape-ano"></p>
+  </div>
+</footer>
+
+<!-- TROCAR 3: só data, local e links. Contato NÃO entra aqui de propósito —
+     ele vive em dados.js, e duplicar levaria o e-mail errado para a cópia. -->
+<noscript>
+  <div class="faixa sem-js">
+    <h2>AWS Student Community Day Belo Horizonte</h2>
+    <p>Sábado, 14 de novembro de 2026, das 9h às 17h, na PUC Minas Coração Eucarístico — Teatro, Prédio 43, Rua Dom José Gaspar, 500.</p>
+    <p>Esta página precisa de JavaScript para mostrar ingressos, chamada de palestras, cotas de patrocínio e contatos.</p>
+    <p><a href="https://www.sympla.com.br/evento/aws-student-community-day-belo-horizonte/3554710">Ingressos no Sympla</a></p>
+    <p><a href="https://sessionize.com/aws-student-community-day-belo-horizonte/">Enviar uma palestra (até 10 de outubro de 2026)</a></p>
+  </div>
+</noscript>
+
+<script src="../dados.js" defer></script>
+<script src="../brasil-mapa.js" defer></script>
+<script src="../comum.js" defer></script>
+<script src="../edicao.js" defer></script>
+</body>
+</html>

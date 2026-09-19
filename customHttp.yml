@@ -1,0 +1,43 @@
+# Cabeçalhos HTTP — AWS Amplify Hosting. Fica na RAIZ do repositório.
+# https://docs.aws.amazon.com/amplify/latest/userguide/custom-header-YAML-format.html
+#
+# Um único bloco global: os patterns do Amplify são "positive match only"
+# (não há exclusão) e a precedência entre patterns sobrepostos não é
+# documentada. Uma regra só = comportamento previsível.
+customHeaders:
+  - pattern: '**/*'
+    headers:
+      # ---------- CACHE ----------
+      # Os arquivos não têm hash no nome (styles.css, comum.js, dados.js são
+      # sobrescritos a cada deploy), então o NAVEGADOR precisa revalidar sempre
+      # — é um 304 barato. A CDN pode guardar por um ano porque o Amplify
+      # invalida o CloudFront a cada deploy.
+      - key: 'Cache-Control'
+        value: 'public, max-age=0, must-revalidate, s-maxage=31536000'
+
+      # ---------- SEGURANÇA ----------
+      - key: 'Strict-Transport-Security'
+        value: 'max-age=31536000; includeSubDomains'
+      - key: 'X-Content-Type-Options'
+        value: 'nosniff'
+      - key: 'Referrer-Policy'
+        value: 'strict-origin-when-cross-origin'
+      - key: 'X-Frame-Options'
+        value: 'DENY'
+      - key: 'Permissions-Policy'
+        value: 'geolocation=(), camera=(), microphone=(), payment=(), usb=()'
+
+      # ---------- CSP ESTRITA ----------
+      # Sem 'unsafe-inline' em script-src NEM em style-src. Isso só é possível
+      # porque o site não tem nenhum <script> inline executável e nenhum
+      # atributo style= inline. Testado: zero violações nas duas páginas.
+      #
+      # Se um dia você adicionar um <script> inline (inclusive um
+      # window.EDICAO_SLUG numa cidade nova), ele será BLOQUEADO e a página
+      # quebra. O slug vem do nome da pasta justamente para evitar isso.
+      #
+      # O bloco application/ld+json NÃO é afetado: é dado, não script.
+      # Google Fonts precisa de dois hosts: googleapis no style-src (o CSS)
+      # e gstatic no font-src (os .woff2).
+      - key: 'Content-Security-Policy'
+        value: "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests"

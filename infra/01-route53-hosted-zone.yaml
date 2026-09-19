@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Etapa 1 de 2 — cria a hosted zone no Route 53 para awsstudentcommunitydays.com.br.
+  Aplique ANTES de trocar os servidores DNS no Registro.br: o Registro.br só aceita
+  a delegação depois de verificar que os NS informados já respondem pelo domínio.
+
+Parameters:
+  DomainName:
+    Type: String
+    Default: awsstudentcommunitydays.com.br
+    Description: Dominio apex, sem www e sem ponto final.
+    AllowedPattern: '^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)+$'
+
+Resources:
+  HostedZone:
+    Type: AWS::Route53::HostedZone
+    Properties:
+      Name: !Ref DomainName
+      HostedZoneConfig:
+        Comment: !Sub 'DNS de ${DomainName} - AWS Student Community Days'
+
+  # Preserva a protecao anti-spoofing que a zona do Registro.br publica hoje.
+  # Sem isto, delegar para o Route 53 REMOVE a protecao e qualquer um pode
+  # forjar e-mail com o seu dominio no remetente.
+  #   MX 0 .           -> null MX (RFC 7505): este dominio nao recebe e-mail
+  #   TXT "v=spf1 -all" -> nenhum servidor pode enviar e-mail por ele
+  # Se um dia voce criar e-mail @awsstudentcommunitydays.com.br, troque estes.
+  RegistrosAntiSpoofing:
+    Type: AWS::Route53::RecordSetGroup
+    Properties:
+      HostedZoneId: !Ref HostedZone
+      RecordSets:
+        - Name: !Ref DomainName
+          Type: MX
+          TTL: '900'
+          ResourceRecords:
+            - '0 .'
+        - Name: !Ref DomainName
+          Type: TXT
+          TTL: '900'
+          ResourceRecords:
+            - '"v=spf1 -all"'
+
+Outputs:
+  HostedZoneId:
+    Description: ID da hosted zone.
+    Value: !Ref HostedZone
+    Export:
+      Name: !Sub '${AWS::StackName}-HostedZoneId'
+
+  NameServers:
+    Description: >-
+      Os 4 name servers. Cadastre EXATAMENTE estes no Registro.br, um por linha
+      e SEM o ponto final. Sao 4, nao 2.
+    Value: !Join [', ', !GetAtt HostedZone.NameServers]

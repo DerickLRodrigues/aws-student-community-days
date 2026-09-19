@@ -1,43 +1,188 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101a2b">
-  <title>AWS Student Community Days Brasil</title>
-  <meta name="description" content="De estudantes, para estudantes. Encontre as edições do AWS Student Community Days Brasil. Belo Horizonte recebe o encontro em 14 de novembro de 2026.">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23101a2b'/%3E%3Cpath d='M12 15l-6 5 6 5m16-10 6 5-6 5M23 11l-6 18' fill='none' stroke='%23ffa544' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07050C">
+<title>AWS Student Community Days Brasil</title>
+<meta name="description" content="Encontros de computação em nuvem feitos por estudantes, para estudantes. Veja as edições confirmadas no Brasil, os ingressos, a chamada de palestras e como patrocinar.">
+<link rel="canonical" href="https://awsstudentcommunitydays.com.br/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:site_name" content="AWS Student Community Days Brasil">
+<meta property="og:url" content="https://awsstudentcommunitydays.com.br/">
+<meta property="og:title" content="AWS Student Community Days Brasil">
+<meta property="og:description" content="Encontros de computação em nuvem feitos por estudantes, para estudantes. Veja as edições confirmadas no Brasil.">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2307050C'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23C4B5FD' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%23E879F9'/%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&display=swap">
+<link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <a class="skip" href="#conteudo">Pular para o conteúdo</a>
-  <header class="site-header">
-    <div class="shell header-inner">
-      <a class="brand" href="#inicio" aria-label="AWS Student Community Days Brasil — início"><span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span><span>aws <b>student</b><small>COMMUNITY DAYS · BRASIL</small></span></a>
-      <nav aria-label="Navegação principal"><a href="#edicoes">Edições</a><a href="#sobre">O movimento</a><a class="nav-cta" href="#edicoes">Encontre seu evento <span aria-hidden="true">↗</span></a></nav>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+<header class="cabecalho">
+  <div class="faixa cabecalho-linha">
+    <a class="marca" href="./" aria-label="AWS Student Community Days Brasil — início">
+      <span class="marca-ponto" aria-hidden="true"></span>
+      <span class="marca-texto">
+        AWS Student Community Days
+        <span class="marca-pais">Brasil</span>
+      </span>
+    </a>
+    <nav class="menu" aria-label="Seções do site">
+      <a href="#edicoes">Edições</a>
+      <a href="#movimento">O movimento</a>
+      <a class="botao botao-primario botao-mini" href="#patrocinio">Patrocinar</a>
+    </nav>
+  </div>
+</header>
+
+<main id="conteudo">
+
+  <!-- ── Capa: o mapa é o protagonista ─────────────────────────── -->
+  <section class="capa" id="topo">
+    <div class="faixa capa-grade">
+      <div class="capa-texto">
+        <p class="capa-chamada">De estudantes, para estudantes</p>
+        <h1 class="capa-titulo">
+          <span class="capa-titulo-evento">AWS Student<br>Community Days</span>
+          <span class="capa-titulo-cidade">Brasil</span>
+        </h1>
+        <p class="capa-resumo">
+          Encontros de computação em nuvem organizados por estudantes universitários,
+          para quem está começando na área. Cada edição acontece numa cidade, dentro de
+          uma universidade, aberta a qualquer pessoa que queira aprender.
+        </p>
+        <div class="capa-acoes" id="capa-acoes"></div>
+      </div>
+
+      <figure class="mapa">
+        <div class="mapa-palco" id="mapa-palco"></div>
+        <figcaption class="mapa-legenda" id="mapa-legenda"></figcaption>
+      </figure>
     </div>
-  </header>
-  <main id="conteudo">
-    <div id="home-view">
-      <section class="hero" id="inicio" aria-labelledby="hero-title">
-        <div class="shell hero-layout">
-          <div class="hero-copy"><p class="eyebrow"><span class="tiny-cross" aria-hidden="true">✳</span> FEITO PELA COMUNIDADE. FEITO PARA VOCÊ.</p><h1 id="hero-title">AWS <span>STUDENT</span><br>COMMUNITY<br>DAYS<span class="brasil"> BRASIL</span><span class="title-dot">.</span></h1><p class="hero-description">Sua próxima conexão começa aqui.<br>Aprenda sobre cloud, compartilhe ideias e encontre a comunidade que cresce com você.</p><div class="hero-actions"><a class="button button-orange" href="#edicoes">Explore as edições <span aria-hidden="true">↗</span></a><a class="text-link" href="#sobre">Conheça o movimento <span aria-hidden="true">↓</span></a></div><div class="hero-footnote"><span class="mini-code" aria-hidden="true">{ }</span> De estudantes, para estudantes.</div></div>
-          <div class="hero-art"><img src="./assets/cloud-hero.png" alt="" width="1254" height="1254" fetchpriority="high"><div class="art-label"><span aria-hidden="true">✳</span> CONECTAR. APRENDER. CONSTRUIR.</div><span class="edition-stamp">EDIÇÃO<br><b>2026</b></span></div>
+  </section>
+
+  <!-- ── Faixa do próximo encontro ─────────────────────────────── -->
+  <div class="barra">
+    <div class="faixa barra-linha" id="barra"></div>
+  </div>
+
+  <!-- ── Edições ───────────────────────────────────────────────── -->
+  <section class="secao" id="edicoes" aria-labelledby="edicoes-titulo">
+    <div class="faixa">
+      <div class="secao-topo secao-topo-linha">
+        <div>
+          <h2 class="secao-titulo" id="edicoes-titulo">As edições</h2>
+          <p class="secao-intro">
+            Clique numa cidade para ver local, horário, programação, ingressos e
+            a chamada de palestras daquela edição.
+          </p>
         </div>
-      </section>
-      <div class="event-ribbon"><div class="shell ribbon-inner"><div><span class="ribbon-label">NOSSO PRÓXIMO ENCONTRO</span><strong>Belo Horizonte, MG</strong></div><div class="ribbon-date"><span aria-hidden="true">↳</span><strong>14 de novembro de 2026</strong><span>Sábado</span></div><a href="#/2026/belo-horizonte">Conheça a edição <span aria-hidden="true">↗</span></a></div></div>
-      <section class="editions section-light" id="edicoes" aria-labelledby="editions-title"><div class="shell"><div class="section-heading"><div><p class="eyebrow">ENCONTRE SUA COMUNIDADE</p><h2 id="editions-title">Um movimento.<br><span>Muitos encontros.</span></h2></div><div class="edition-picker"><label for="year-select">Explore por ano</label><select id="year-select"><option value="2026">2026</option></select></div></div><div class="edition-meta"><p>Escolha uma cidade e descubra os detalhes do evento.</p><span id="event-count">1 cidade confirmada</span></div><div id="event-list"><a class="event-card" href="#/2026/belo-horizonte" aria-label="Ver edição de Belo Horizonte, 14 de novembro de 2026"><div class="ticket-date"><span>NOVEMBRO</span><strong>14</strong><span>SÁBADO · 2026</span></div><div class="ticket-body"><span class="status">DATA CONFIRMADA</span><h3>Belo Horizonte<span>MG</span></h3><p>A comunidade estudantil se encontra em BH.</p><div class="ticket-details"><span>Minas Gerais</span><span>Local em breve</span></div></div><div class="ticket-action"><span class="round-arrow" aria-hidden="true">↗</span><span>Ver edição</span></div></a></div><p class="edition-note">Novas cidades e informações serão anunciadas por aqui.</p></div></section>
-      <section class="about" id="sobre" aria-labelledby="about-title"><div class="shell"><div class="about-top"><div><p class="eyebrow">O MOVIMENTO</p><h2 id="about-title">O futuro da cloud<br>se constrói <em>em comunidade.</em></h2></div><p>O AWS Student Community Days Brasil conecta estudantes que querem aprender, trocar experiências e dar os próximos passos com tecnologia. Encontros locais, liderados pela própria comunidade AWS, com espaço para novas ideias e novas conexões.</p></div><div class="principles"><article><span class="principle-number">01 / APRENDER</span><h3>Conhecimento que circula.</h3><p>Explore o universo da AWS e da computação em nuvem junto de quem também está nessa jornada.</p></article><article><span class="principle-number">02 / CONECTAR</span><h3>Encontre a sua turma.</h3><p>Conheça estudantes e pessoas da comunidade. Uma conversa pode ser o começo de uma grande parceria.</p></article><article><span class="principle-number">03 / COMPARTILHAR</span><h3>Todo mundo tem algo a somar.</h3><p>Suas dúvidas, ideias e experiências também ajudam a comunidade a crescer.</p></article></div><div class="about-bottom"><span>De estudantes, para estudantes. Do Brasil, para o futuro.</span><a href="#edicoes">Faça parte do encontro <span aria-hidden="true">↗</span></a></div></div></section>
+        <p class="secao-contagem" id="edicoes-contagem"></p>
+      </div>
+      <!-- Seletor de ano. Fica escondido enquanto só existir um ano. -->
+      <div class="anos" id="anos" role="group" aria-labelledby="anos-rotulo" hidden></div>
+      <div class="edicoes-lista" id="edicoes-lista"></div>
+      <p class="edicoes-nota">
+        Quer trazer um encontro para a sua universidade? Fale com a organização —
+        o contato está no rodapé.
+      </p>
     </div>
-    <section class="detail-view" id="detail-view" hidden aria-labelledby="detail-title"></section>
-    <noscript><div class="shell noscript-note">Belo Horizonte · 14 de novembro de 2026. Local, horário, programação e inscrições serão anunciados em breve. Ative o JavaScript para navegar pelos detalhes de cada edição.</div></noscript>
-  </main>
-  <footer><div class="shell footer-inner"><a class="brand" href="#inicio"><span class="brand-symbol" aria-hidden="true">&lt;/&gt;</span><span>aws <b>student</b><small>COMMUNITY DAYS · BRASIL</small></span></a><p>Organizado pela comunidade, para a comunidade.<br><span>© 2026 AWS Student Community Days Brasil</span></p></div></footer>
-  <script src="./events.js" defer></script>
-  <script src="./app.js" defer></script>
+  </section>
+
+  <!-- ── O movimento ───────────────────────────────────────────── -->
+  <section class="secao secao-alt" id="movimento" aria-labelledby="movimento-titulo">
+    <div class="faixa">
+      <div class="secao-topo">
+        <h2 class="secao-titulo" id="movimento-titulo">Por que a gente faz isso</h2>
+      </div>
+      <div class="pilares">
+        <article class="pilar">
+          <h3>Conhecimento que sai da sala de aula</h3>
+          <p>
+            Computação em nuvem quase nunca cabe na ementa. Aqui você vê como as coisas
+            funcionam de verdade, com quem já colocou em produção.
+          </p>
+        </article>
+        <article class="pilar">
+          <h3>Gente que está no mesmo caminho</h3>
+          <p>
+            Um dia inteiro perto de estudantes, profissionais e pessoas da comunidade AWS.
+            Muita vaga e muito projeto começam numa conversa de intervalo.
+          </p>
+        </article>
+        <article class="pilar">
+          <h3>Espaço para a sua primeira vez</h3>
+          <p>
+            A primeira palestra, o primeiro evento, o primeiro contato com a comunidade.
+            Este é o lugar para isso acontecer sem pressão.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Patrocínio ────────────────────────────────────────────── -->
+  <section class="secao patrocinio" id="patrocinio" aria-labelledby="patrocinio-titulo">
+    <div class="faixa">
+      <div class="secao-topo secao-topo-duplo">
+        <div>
+          <h2 class="secao-titulo" id="patrocinio-titulo">Patrocine um encontro</h2>
+          <p class="secao-intro">
+            Auditórios cheios de estudantes de computação que estão escolhendo agora
+            as ferramentas e as empresas com que querem trabalhar. Patrocinar é como
+            a gente mantém os encontros acessíveis e é como a sua marca chega neles primeiro.
+          </p>
+        </div>
+        <div class="patrocinio-chamada" id="patrocinio-acoes"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="faixa rodape-grade">
+    <div class="rodape-marca">
+      <span class="marca-ponto" aria-hidden="true"></span>
+      <p class="rodape-nome">AWS Student Community Days Brasil</p>
+      <p class="rodape-nota">Encontros organizados pela comunidade estudantil, para a comunidade.</p>
+    </div>
+    <nav class="rodape-links" aria-label="Navegação">
+      <p class="rodape-rotulo">Navegar</p>
+      <a href="#edicoes">Edições</a>
+      <a href="#movimento">O movimento</a>
+      <a href="#patrocinio">Patrocinar</a>
+    </nav>
+    <nav class="rodape-links" id="rodape-contato" aria-label="Contato e redes" hidden>
+      <p class="rodape-rotulo">Contato</p>
+    </nav>
+  </div>
+  <div class="faixa rodape-fim">
+    <p>Evento organizado pela comunidade. Não é um evento oficial da Amazon Web Services.</p>
+    <p id="rodape-ano"></p>
+  </div>
+</footer>
+
+<noscript>
+  <div class="faixa sem-js">
+    <h2>AWS Student Community Days Brasil</h2>
+    <p>Próxima edição: Belo Horizonte, sábado, 14 de novembro de 2026, das 9h às 17h, na PUC Minas Coração Eucarístico.</p>
+    <p><a href="./belo-horizonte/">Ver a edição de Belo Horizonte</a></p>
+    <p>Patrocínio e contato: <a href="mailto:awscloudclubpucminas@gmail.com">awscloudclubpucminas@gmail.com</a></p>
+  </div>
+</noscript>
+
+<script src="./dados.js" defer></script>
+<script src="./brasil-mapa.js" defer></script>
+<script src="./comum.js" defer></script>
+<script src="./hub.js" defer></script>
 </body>
 </html>
-

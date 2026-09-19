@@ -1,0 +1,57 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >-
+  Etapa 2 de 2 — associa o dominio (apex + www) ao app do Amplify Hosting, com
+  certificado gerenciado. Aplique SOMENTE depois que
+  "dig NS awsstudentcommunitydays.com.br +short" ja responder com os NS do
+  Route 53. Com a hosted zone na mesma conta, o Amplify cria sozinho o CNAME de
+  validacao do certificado e o registro ALIAS do apex.
+
+Parameters:
+  AmplifyAppId:
+    Type: String
+    Description: ID do app Amplify (aparece na URL do console).
+    AllowedPattern: '^[a-z0-9]+$'
+    MinLength: 1
+    MaxLength: 30
+
+  DomainName:
+    Type: String
+    Default: awsstudentcommunitydays.com.br
+    Description: Dominio apex, sem ponto final.
+
+  BranchName:
+    Type: String
+    Default: main
+    Description: Branch do Amplify que serve producao.
+    MinLength: 1
+    MaxLength: 255
+
+Resources:
+  AmplifyDomain:
+    Type: AWS::Amplify::Domain
+    Properties:
+      AppId: !Ref AmplifyAppId
+      DomainName: !Ref DomainName
+      EnableAutoSubDomain: false
+      CertificateSettings:
+        CertificateType: AMPLIFY_MANAGED
+      SubDomainSettings:
+        # Prefixo vazio = apex. E o canonico, igual ao rel=canonical do HTML.
+        - BranchName: !Ref BranchName
+          Prefix: ''
+        # www existe so para redirecionar 301 para o apex. A regra de redirect
+        # e criada no console (veja redirects-amplify.json), nao aqui.
+        - BranchName: !Ref BranchName
+          Prefix: 'www'
+
+Outputs:
+  DomainStatus:
+    Description: PENDING_VERIFICATION / AVAILABLE / FAILED.
+    Value: !GetAtt AmplifyDomain.DomainStatus
+
+  StatusReason:
+    Description: Motivo do status atual, util para depurar falha de validacao.
+    Value: !GetAtt AmplifyDomain.StatusReason
+
+  UrlApex:
+    Value: !Sub 'https://${DomainName}'

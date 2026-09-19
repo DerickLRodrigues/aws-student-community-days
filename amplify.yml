@@ -1,0 +1,14 @@
+# AWS Amplify Hosting — site estático, sem etapa de build.
+# Fica na RAIZ do repositório, no mesmo nível de index.html.
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands: []
+    build:
+      commands: []
+  artifacts:
+    # Os arquivos já estão prontos na raiz do repositório: nada a compilar.
+    baseDirectory: /
+    files:
+      - '**/*'
