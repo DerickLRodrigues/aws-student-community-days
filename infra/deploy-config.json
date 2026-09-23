@@ -1,0 +1,11 @@
+{
+  "region": "us-east-1",
+  "stack_name": "student-community-days-site",
+  "bucket": "student-community-days-site-sitebucket-bbrwnpypgv2m",
+  "distribution_id": "E13Q95V1KLW0SM",
+  "cloudfront_domain": "d1wcfv2t0otrz7.cloudfront.net",
+  "role_arn": "arn:aws:iam::381753456959:role/student-community-days-site-DeployRole-5POTIcuvHOK8",
+  "domain": "awsstudentcommunitydays.com.br",
+  "hosted_zone_id": "Z03531562NQO4C5DT80SM",
+  "amplify_app_id": "d1cxzd95q2sbmu"
+}

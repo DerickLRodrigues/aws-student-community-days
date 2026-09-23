@@ -1,6 +1,7 @@
 # AWS Student Community Days Brasil
 
-Site do movimento, em `awsstudentcommunitydays.com.br`, hospedado no AWS Amplify.
+Site do movimento, em `awsstudentcommunitydays.com.br`. A hospedagem S3 + CloudFront
+e a esteira GitHub Actions estão em preparação para substituir o AWS Amplify.
 
 Sem dependências, sem build, sem backend. HTML, CSS e JavaScript puro.
 
@@ -93,7 +94,20 @@ python3 -m http.server 8000
 
 Abra `http://localhost:8000`. Use o servidor, não `file://`, porque o slug é lido do caminho da URL.
 
-## Publicar no Amplify
+## Publicar com GitHub Actions
+
+O workflow [deploy.yml](.github/workflows/deploy.yml) publica automaticamente após
+push para `main`, usando S3 privado + CloudFront e autenticação OIDC, sem secrets
+de usuário AWS. Pull requests executam somente validação.
+
+Consulte [infra/DEPLOY.md](infra/DEPLOY.md) para os recursos, configuração, testes,
+publicação local e o procedimento de migração do domínio. Os identificadores reais
+ficam em [infra/deploy-config.json](infra/deploy-config.json).
+
+**Mantenha o Amplify até concluir e verificar o corte do domínio.** O script de
+migração tem modo de simulação por padrão e não exclui o app Amplify.
+
+## Hospedagem anterior: Amplify
 
 Os arquivos de configuração já estão prontos na raiz:
 

@@ -1,0 +1,73 @@
+name: Deploy site to S3 and CloudFront
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Package public files
+        run: python3 scripts/package-site.py
+      - name: Check JavaScript syntax
+        run: find .build/site -name '*.js' -print0 | xargs -0 -n1 node --check
+      - name: Test CloudFront routing
+        run: node tests/routing.cjs
+      - name: Validate infrastructure template
+        run: |
+          python3 -m pip install cfn-lint==1.57.0
+          cfn-lint --template infra/03-static-site.yaml --regions us-east-1 --non-zero-exit-code error
+
+  deploy:
+    needs: validate
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Read deployment configuration
+        id: config
+        run: |
+          python3 - <<'PY'
+          import json, os
+          config = json.load(open('infra/deploy-config.json'))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              for key in ('role_arn', 'region', 'cloudfront_domain'):
+                  value = config[key]
+                  assert value and '\n' not in value and '\r' not in value
+                  print(f'{key}={value}', file=output)
+          PY
+      - name: Authenticate to AWS with GitHub OIDC
+        uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
+        with:
+          role-to-assume: ${{ steps.config.outputs.role_arn }}
+          aws-region: ${{ steps.config.outputs.region }}
+          role-session-name: github-site-${{ github.run_id }}
+          allowed-account-ids: '381753456959'
+      - name: Package and deploy
+        run: |
+          python3 scripts/package-site.py
+          python3 scripts/deploy-site.py
+      - name: Verify published site
+        env:
+          SITE_URL: https://${{ steps.config.outputs.cloudfront_domain }}
+        run: python3 scripts/smoke-test.py "$SITE_URL"

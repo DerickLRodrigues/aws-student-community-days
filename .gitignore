@@ -1,0 +1,5 @@
+.build/
+.deploy-local/
+__pycache__/
+*.pyc
+

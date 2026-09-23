@@ -1,0 +1,36 @@
+# Project rules: public-access blocks, encryption, retention, signed origin and HTTPS.
+let buckets = Resources.*[ Type == 'AWS::S3::Bucket' ]
+rule private_encrypted_buckets {
+  %buckets {
+    DeletionPolicy == 'Retain'
+    UpdateReplacePolicy == 'Retain'
+    Properties {
+      PublicAccessBlockConfiguration {
+        BlockPublicAcls == true
+        BlockPublicPolicy == true
+        IgnorePublicAcls == true
+        RestrictPublicBuckets == true
+      }
+      BucketEncryption.ServerSideEncryptionConfiguration[*].ServerSideEncryptionByDefault.SSEAlgorithm == 'AES256'
+    }
+  }
+}
+rule signed_private_origin {
+  Resources.OriginAccess.Properties.OriginAccessControlConfig {
+    OriginAccessControlOriginType == 's3'
+    SigningBehavior == 'always'
+    SigningProtocol == 'sigv4'
+  }
+  Resources.SiteBucket.Properties.OwnershipControls.Rules[*].ObjectOwnership == 'BucketOwnerEnforced'
+  Resources.SiteBucket.Properties.VersioningConfiguration.Status == 'Enabled'
+}
+rule encrypted_viewer_connections {
+  Resources.Distribution.Properties.DistributionConfig.DefaultCacheBehavior.ViewerProtocolPolicy == 'redirect-to-https'
+  Resources.Distribution.Properties.DistributionConfig.ViewerCertificate.MinimumProtocolVersion == 'TLSv1.2_2025'
+  Resources.Distribution.Properties.DistributionConfig.Logging exists
+}
+rule temporary_deployment_credentials {
+  Resources.DeployRole.Properties.AssumeRolePolicyDocument.Statement[*].Action == 'sts:AssumeRoleWithWebIdentity'
+  Resources.DeployRole.Properties.AssumeRolePolicyDocument.Statement[*].Condition.StringEquals exists
+  Resources.DeployRole.Properties.MaxSessionDuration == 3600
+}
