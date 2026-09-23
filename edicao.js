@@ -37,7 +37,8 @@
     return;
   }
 
-  var ingressos = A.urlSegura(edicao.ingressosUrl);
+  var ingressos  = A.urlSegura(edicao.ingressosUrl);
+  var notaIngresso = edicao.notaIngresso || null;
   var comoChegar = A.urlSegura(edicao.mapaUrl);
   var c = A.cfp(edicao);
   var diasEvento = A.diasAte(edicao.data);
@@ -120,7 +121,7 @@
           ? '<a href="' + A.esc(comoChegar) + '" target="_blank" rel="noopener">' + A.esc(edicao.local) + '</a>'
           : A.esc(edicao.local),
         e: [edicao.detalheLocal, edicao.endereco].filter(Boolean).map(A.esc).join('<br>') },
-      { r: 'Como funciona', v: 'Duas trilhas, palestras de 35 minutos', e: A.esc(edicao.formato) },
+      { r: 'Como funciona', v: edicao.formatoTitulo ? A.esc(edicao.formatoTitulo) : 'Duas trilhas, palestras de 35 minutos', e: A.esc(edicao.formato) },
       { r: 'Quem organiza', v: A.esc(edicao.organizador),
         e: 'Com apoio da comunidade AWS em ' + A.esc(edicao.cidade) + '.' }
     ];
@@ -148,7 +149,7 @@
       p.push('<p class="compra-nota">Obrigado a todo mundo que apareceu. A próxima edição será anunciada na página inicial.</p>');
       p.push('<a class="botao botao-secundario botao-largo" href="../">Ver as edições</a>');
     } else {
-      p.push('<p class="compra-nota">A venda é pelo Sympla, que mostra os lotes e as formas de pagamento disponíveis.</p>');
+      p.push('<p class="compra-nota">' + (notaIngresso ? A.esc(notaIngresso) : 'A venda é pelo Sympla, que mostra os lotes e as formas de pagamento disponíveis.') + '</p>');
       if (ingressos) {
         p.push('<a class="botao botao-primario botao-largo" href="' + A.esc(ingressos) +
           '" target="_blank" rel="noopener">Garantir ingresso no Sympla</a>');
