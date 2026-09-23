@@ -110,6 +110,49 @@ window.TRILHAS_PADRAO = [
 window.EDICOES = [
   {
     ano: 2026,
+    slug: 'atibaia',
+    cidade: 'Atibaia',
+    uf: 'SP',
+    estado: 'São Paulo',
+    lat: -23.1171,
+    lon: -46.5563,
+    data: '2026-10-31',
+    horario: '09:00 às 19:00',
+    local: 'UNIFAAT — Centro Universitário de Atibaia',
+    detalheLocal: 'Campus Sede',
+    endereco: 'Estr. Mun. Jucá Sanches, 1050 — Boa Vista, Atibaia/SP',
+    mapaUrl: 'https://www.google.com/maps/search/?api=1&query=UNIFAAT+Estrada+Municipal+Juca+Sanches+1050+Atibaia+SP',
+    organizador: 'AWS Student Builder Group Atibaia',
+
+    ingressosUrl: null,
+    notaIngresso: 'Consulte o cronograma do evento e participe das palestras/workshop.',
+    palestrasUrl: null,
+    prazoPalestras: null,
+
+    /* ---- contato desta edição ---- */
+    email: 'clubcloudunifaat@gmail.com',
+    emailPatrocinio: 'clubcloudunifaat@gmail.com',
+    redes: [
+      { nome: 'Instagram', url: 'https://www.instagram.com/awscloud_unifaat/' },
+      { nome: 'LinkedIn',  url: 'https://www.linkedin.com/in/aws-cloud-club-unifaat-418a353a9/' }
+    ],
+
+    /* ---- patrocínio desta edição ---- */
+    cotas: null,
+    patrocinadores: [],
+
+    trilhas: null,
+
+    resumo: 'O encontro universitário de computação em nuvem de Atibaia.',
+    descricao: 'Um dia inteiro de conteúdo técnico sobre AWS e computação em nuvem, organizado por estudantes da UNIFAAT. Palestras, trilhas e muito networking para quem está construindo o futuro na nuvem no interior de São Paulo.',
+    formato: '1 hora de duração cada palestra/workshop. (Dúvidas consulte o staff do evento)',
+    formatoTitulo: '1 hora cada palestra/workshop por sessão',
+    programacao: [],
+    palestrantes: []
+  },
+
+  {
+    ano: 2026,
     slug: 'belo-horizonte',
     cidade: 'Belo Horizonte',
     uf: 'MG',
