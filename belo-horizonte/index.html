@@ -88,6 +88,7 @@
     </a>
     <nav class="menu" aria-label="Seções desta edição">
       <a href="#edicao">A edição</a>
+      <a href="#programacao">Programação</a>
       <a href="#palestrar">Palestrar</a>
       <a href="#patrocinio">Patrocinar</a>
       <a href="#contato">Contato</a>
@@ -138,6 +139,30 @@
   </section>
 
   <!-- ── Chamada de palestras ──────────────────────────────────── -->
+  <section class="secao secao-alt" id="programacao" aria-labelledby="programacao-titulo">
+    <div class="faixa">
+      <div class="secao-topo">
+        <h2 class="secao-titulo" id="programacao-titulo">Um dia, dois palcos.</h2>
+        <p class="secao-intro">Confira a programação preliminar de BH. Horários, títulos e participantes sujeitos a alterações. Horários de Brasília.</p>
+      </div>
+      <div class="agenda-palcos"><p><strong>Palco 1 · 250 lugares</strong><br>Fundamentos e carreira · nível 100</p><p><strong>Palco 2 · 50 lugares</strong><br>Aprofundamento técnico · nível 200</p></div>
+      <div id="agenda-grade"></div>
+      <div class="agenda-personalizar" aria-labelledby="minha-agenda-titulo">
+        <h3 id="minha-agenda-titulo">Quais palestras você vai ver?</h3>
+        <p>Monte sua programação com uma palestra por horário. Ao escolher outra no mesmo horário, a anterior é substituída. Sua seleção não reserva lugar nas salas.</p>
+        <div id="agenda-escolhas"></div>
+        <p id="agenda-status" role="status" aria-live="polite"></p>
+        <div class="agenda-acoes">
+          <button type="button" class="botao botao-primario" id="agenda-baixar" disabled>Baixar minha programação (PNG)</button>
+          <button type="button" class="botao botao-secundario" id="agenda-limpar">Limpar seleção</button>
+        </div>
+        <p>Baixe a imagem e compartilhe com a galera!</p>
+        <canvas id="agenda-imagem" role="img" aria-label="Prévia da sua programação selecionada" hidden></canvas>
+      </div>
+      <noscript><p>Ative o JavaScript para consultar a grade e montar sua programação.</p></noscript>
+    </div>
+  </section>
+
   <section class="secao secao-alt" id="palestrar" aria-labelledby="palestrar-titulo">
     <div class="faixa">
       <div class="secao-topo">
@@ -229,5 +254,6 @@
 <script src="../brasil-mapa.js" defer></script>
 <script src="../comum.js" defer></script>
 <script src="../edicao.js" defer></script>
+<script src="../programacao.js" defer></script>
 </body>
 </html>

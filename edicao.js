@@ -199,7 +199,9 @@
     } else {
       p.push('<p class="cfp-estado">Chamada encerrada</p>');
       p.push('<p class="cfp-titulo">Obrigado a quem enviou</p>');
-      p.push('<p class="cfp-texto">A seleção foi feita e a programação será publicada aqui.</p>');
+      p.push('<p class="cfp-texto">' + (edicao.programacao && edicao.programacao.length
+        ? 'Confira a programação preliminar e monte sua seleção de palestras abaixo da grade.'
+        : 'A seleção foi feita e a programação será publicada aqui.') + '</p>');
     }
     p.push('<p class="cfp-formato">Palestras de 35 minutos, sendo 30 de apresentação e 5 de perguntas. ' +
       'É presencial em ' + A.esc(edicao.cidade) + ', e o evento não cobre viagem nem hospedagem.</p>');

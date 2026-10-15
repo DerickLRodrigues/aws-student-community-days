@@ -552,6 +552,41 @@ a.vaga:hover { border-color: var(--roxo); color: var(--roxo-claro); }
 }
 .logo-patrocinador img { max-height: 54px; width: auto; object-fit: contain; }
 
+/* Programação e seleção pessoal de palestras */
+.agenda-palcos, .agenda-sessoes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.agenda-palcos { margin-bottom: 24px; color: var(--texto-suave); }
+.agenda-palcos strong { color: var(--roxo-claro); }
+.agenda-bloco { padding-block: 22px; border-top: 1px solid var(--borda); }
+.agenda-horario { font-weight: 700; margin-bottom: 12px; color: var(--roxo-claro); }
+.agenda-horario span { margin-left: 16px; color: var(--texto-suave); font-weight: 400; font-size: 14px; }
+.agenda-sessao { min-width: 0; padding: 22px; background: var(--superficie-alta); border: 1px solid var(--borda); border-radius: var(--curva); }
+.agenda-sessao:only-child { grid-column: 1 / -1; }
+.agenda-palco { font-size: 13px; color: var(--roxo-claro); margin-bottom: 10px; }
+.agenda-sessao strong, .agenda-opcao strong { display: block; line-height: 1.45; }
+.agenda-sessao > span, .agenda-opcao span > span { display: block; margin-top: 8px; color: var(--texto-suave); }
+.agenda-sessao small, .agenda-opcao small { display: block; color: var(--roxo-claro); font-size: 13px; margin-top: 8px; }
+.agenda-intervalo { display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 18px 22px; border-radius: 8px; background: var(--roxo-fundo); color: var(--texto-suave); margin-block: 8px; font-size: 15px; }
+.agenda-intervalo strong { color: var(--texto); }
+.agenda-personalizar { margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--borda-forte); }
+.agenda-personalizar h3 { font-size: clamp(26px, 4vw, 38px); margin-bottom: 18px; }
+.agenda-personalizar > p { color: var(--texto-suave); max-width: 75ch; }
+.agenda-opcoes { min-width: 0; margin: 24px 0; padding: 16px; border: 1px solid var(--borda); border-radius: var(--curva); }
+.agenda-opcoes legend { color: var(--roxo-claro); padding-inline: 8px; font-weight: 600; }
+.agenda-opcao { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border: 1px solid var(--borda); border-radius: 8px; cursor: pointer; }
+.agenda-opcao:has(input:checked) { background: var(--roxo-fundo); border-color: var(--roxo-claro); }
+.agenda-opcao input { flex: 0 0 auto; margin-top: 8px; width: 20px; height: 20px; accent-color: var(--roxo); }
+.agenda-opcao small:first-child { margin: 0 0 8px; }
+.agenda-acoes { display: flex; flex-wrap: wrap; gap: 14px; margin-block: 20px; }
+.agenda-acoes button { font: inherit; cursor: pointer; white-space: normal; }
+.agenda-acoes button:disabled { opacity: .5; cursor: not-allowed; }
+#agenda-imagem { display: block; max-width: 100%; width: 540px; height: auto; margin-top: 28px; border: 1px solid var(--borda-forte); border-radius: 12px; }
+#agenda-imagem[hidden] { display: none; }
+@media (max-width: 650px) {
+  .agenda-palcos, .agenda-sessoes { grid-template-columns: minmax(0, 1fr); }
+  .agenda-opcoes { padding: 10px; }
+  .agenda-opcao, .agenda-sessao { padding: 16px; }
+}
+
 /* ── Rodapé ─────────────────────────────────────────────────────────── */
 
 .rodape { border-top: 1px solid var(--borda); padding-top: clamp(40px, 5vw, 64px); }
