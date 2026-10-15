@@ -184,7 +184,12 @@ window.EDICOES = [
     /* ---- patrocínio desta edição ---- */
     // null = usa COTAS_PADRAO. Troque por um array para ter cotas próprias.
     cotas: null,
-    patrocinadores: [],
+    patrocinadores: [
+      { nome: 'Editora Novatec', logo: '../assets/belo-horizonte/logo_novatec.png' },
+      { nome: 'ArcelorMittal', logo: '../assets/belo-horizonte/logo_arcelormittal.png' },
+      { nome: 'PUC Minas', logo: '../assets/belo-horizonte/brasao-pucminas-2025_COR.png' },
+      { nome: 'Amazon Web Services (AWS)', logo: '../assets/belo-horizonte/aws-logo-rgb.png' }
+    ],
 
     // null = usa TRILHAS_PADRAO.
     trilhas: null,
