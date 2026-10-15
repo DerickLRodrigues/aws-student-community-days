@@ -231,7 +231,7 @@ window.EDICOES = [
       ] },
       { inicio: '15:40', fim: '16:10', tipo: 'Intervalo', titulo: 'Coffee break 2', local: 'Intervalo comum' },
       { inicio: '16:10', fim: '16:50', tipo: 'Keynote', sessoes: [
-        { id: 'encerramento', palco: 1, titulo: 'E se esse aplicativo crescesse?', pessoa: 'Paloma', nota: 'Keynote de encerramento · título sugerido · desafio de arquitetura com participação do público' }
+        { id: 'encerramento', palco: 1, titulo: 'A Definit', pessoa: 'Paloma', nota: 'Keynote de encerramento · título sugerido · desafio de arquitetura com participação do público' }
       ] }
     ],
     palestrantes: []
