@@ -284,6 +284,21 @@
     /* Armazenamento indisponível não impede a seleção. */
   }
 
+  // Refaz a imagem quando a fonte Archivo (a do site) terminar de carregar
+  if (document.fonts && document.fonts.load) {
+    document.fonts
+      .load("bold 30px Archivo")
+      .then(function () {
+        atualizar();
+      })
+      .catch(function () {});
+  }
+
+  var LETRA = "Archivo, Arial, sans-serif";
+  function letra(peso, tamanho) {
+    return (peso ? peso + " " : "") + tamanho + "px " + LETRA;
+  }
+
   function gerarImagem(lista) {
     var ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Canvas indisponível");
@@ -302,95 +317,270 @@
       if (linha) resultado.push(linha);
       return resultado;
     }
-    var itens = lista.map(function (s) {
-      var titulo = linhas(s.titulo, "bold 30px Arial", 864);
-      var pessoa = linhas(s.pessoa, "24px Arial", 864);
-      var nota = s.nota ? linhas(s.nota, "20px Arial", 864) : [];
-      return {
-        sessao: s,
-        titulo: titulo,
-        pessoa: pessoa,
-        nota: nota,
-        altura:
-          100 + titulo.length * 38 + pessoa.length * 32 + nota.length * 28,
-      };
+
+    // Pausas (almoço, coffee break) que ficam entre a primeira e a última palestra escolhidas
+    var primeiro = lista[0].inicio;
+    var ultimo = lista[lista.length - 1].fim;
+    var pausas = blocos.filter(function (b) {
+      return (
+        !b.sessoes &&
+        b.tipo === "Intervalo" &&
+        b.inicio >= primeiro &&
+        b.fim <= ultimo
+      );
     });
-    canvas.width = 1080;
-    canvas.height =
-      430 +
+
+    var itens = lista
+      .map(function (s) {
+        var titulo = linhas(s.titulo, letra("bold", 30), 700);
+        var pessoa = linhas(s.pessoa, letra("", 24), 700);
+        var nota = s.nota ? linhas(s.nota, letra("", 20), 700) : [];
+        return {
+          pausa: false,
+          inicio: s.inicio,
+          fim: s.fim,
+          sessao: s,
+          titulo: titulo,
+          pessoa: pessoa,
+          nota: nota,
+          altura:
+            88 + titulo.length * 38 + pessoa.length * 32 + nota.length * 28,
+        };
+      })
+      .concat(
+        pausas.map(function (b) {
+          return {
+            pausa: true,
+            inicio: b.inicio,
+            fim: b.fim,
+            titulo: b.titulo,
+            altura: 40,
+          };
+        }),
+      )
+      .sort(function (a, b) {
+        return a.inicio < b.inicio ? -1 : a.inicio > b.inicio ? 1 : 0;
+      });
+
+    var largura = 1080;
+    var topoGrade = 326;
+    var altura =
+      topoGrade +
       itens.reduce(function (soma, item) {
         return soma + item.altura + 18;
-      }, 0);
-    ctx.fillStyle = "#07050C";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#8B5CF6";
-    ctx.fillRect(0, 0, 1080, 14);
+      }, 0) +
+      152;
+    canvas.width = largura;
+    canvas.height = altura;
+
     function escrever(texto, x, y, fonte, cor) {
       ctx.font = fonte;
       ctx.fillStyle = cor;
       ctx.fillText(texto, x, y);
     }
-    escrever("AWS STUDENT COMMUNITY DAY", 72, 78, "bold 24px Arial", "#C4B5FD");
-    escrever("Minha programação em BH", 72, 146, "bold 48px Arial", "#F4F0FA");
+    // Retângulo com cantos arredondados
+    function caixa(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+    // Etiqueta arredondada com texto; devolve a largura
+    function pilula(x, yTopo, texto, tamanho, h, corTexto, corFundo, corBorda) {
+      ctx.font = letra("bold", tamanho);
+      var w = ctx.measureText(texto).width + h;
+      caixa(x, yTopo, w, h, h / 2);
+      ctx.fillStyle = corFundo;
+      ctx.fill();
+      ctx.strokeStyle = corBorda;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      escrever(
+        texto,
+        x + h / 2,
+        yTopo + h / 2 + tamanho * 0.35,
+        letra("bold", tamanho),
+        corTexto,
+      );
+      return w;
+    }
+
+    // ── Fundo ──────────────────────────────────────────────
+    ctx.fillStyle = "#07050C";
+    ctx.fillRect(0, 0, largura, altura);
+
+    // Brilhos suaves de roxo (dão profundidade sem precisar de imagem)
+    var brilho1 = ctx.createRadialGradient(
+      largura - 120,
+      150,
+      0,
+      largura - 120,
+      150,
+      560,
+    );
+    brilho1.addColorStop(0, "rgba(139,92,246,0.32)");
+    brilho1.addColorStop(1, "rgba(139,92,246,0)");
+    ctx.fillStyle = brilho1;
+    ctx.fillRect(0, 0, largura, altura);
+    var brilho2 = ctx.createRadialGradient(
+      0,
+      altura * 0.65,
+      0,
+      0,
+      altura * 0.65,
+      620,
+    );
+    brilho2.addColorStop(0, "rgba(232,121,249,0.10)");
+    brilho2.addColorStop(1, "rgba(232,121,249,0)");
+    ctx.fillStyle = brilho2;
+    ctx.fillRect(0, 0, largura, altura);
+
+    ctx.fillStyle = "#8B5CF6";
+    ctx.fillRect(0, 0, largura, 14);
+
+    // ── Cabeçalho ──────────────────────────────────────────
+    escrever("AWS STUDENT COMMUNITY DAY", 72, 78, letra("bold", 24), "#C4B5FD");
+    escrever("Minha programação em BH", 72, 146, letra("bold", 48), "#F4F0FA");
     escrever(
       A.dataLonga(edicao.data) + " · Belo Horizonte",
       72,
       194,
-      "26px Arial",
+      letra("", 26),
       "#C4B5FD",
     );
-    escrever(edicao.local, 72, 234, "24px Arial", "#B3A6CC");
-    var y = 278;
+    escrever(edicao.local, 72, 234, letra("", 24), "#B3A6CC");
+    var palcos = new Set(
+      lista.map(function (s) {
+        return s.palco;
+      }),
+    ).size;
+    var resumo =
+      lista.length +
+      (lista.length === 1 ? " palestra" : " palestras") +
+      " · " +
+      palcos +
+      (palcos === 1 ? " palco" : " palcos");
+    pilula(
+      72,
+      262,
+      resumo,
+      22,
+      42,
+      "#C4B5FD",
+      "rgba(139,92,246,0.18)",
+      "rgba(196,181,253,0.55)",
+    );
+
+    // ── Linha do tempo ─────────────────────────────────────
+    var linhaX = 196;
+    var y = topoGrade;
     itens.forEach(function (item) {
-      ctx.fillStyle = "#191128";
-      ctx.fillRect(72, y, 936, item.altura);
+      item.y = y;
+      y += item.altura + 18;
+    });
+    var primeiroItem = itens[0];
+    var ultimoItem = itens[itens.length - 1];
+    ctx.strokeStyle = "rgba(139,92,246,0.40)";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(linhaX, primeiroItem.y + 38);
+    ctx.lineTo(linhaX, ultimoItem.y + (ultimoItem.pausa ? 20 : 38));
+    ctx.stroke();
+
+    itens.forEach(function (item) {
+      var yi = item.y;
+
+      if (item.pausa) {
+        ctx.beginPath();
+        ctx.arc(linhaX, yi + 20, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#7A66A8";
+        ctx.fill();
+        escrever(item.inicio, 72, yi + 27, letra("", 20), "#8878A6");
+        escrever(
+          item.titulo + " · até " + item.fim,
+          224,
+          yi + 27,
+          letra("", 22),
+          "#B3A6CC",
+        );
+        return;
+      }
+
+      // Horário na coluna da esquerda
+      escrever(item.inicio, 72, yi + 50, letra("bold", 32), "#F4F0FA");
+      escrever("até " + item.fim, 72, yi + 78, letra("", 20), "#B3A6CC");
+      // Ponto na linha do tempo
+      ctx.beginPath();
+      ctx.arc(linhaX, yi + 38, 12, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(139,92,246,0.25)";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(linhaX, yi + 38, 6, 0, Math.PI * 2);
+      ctx.fillStyle = "#C4B5FD";
+      ctx.fill();
+
+      // Card
+      caixa(224, yi, 784, item.altura, 14);
+      ctx.fillStyle = "rgba(25,17,40,0.9)";
+      ctx.fill();
+      ctx.strokeStyle = "rgba(139,92,246,0.45)";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.save();
+      caixa(224, yi, 784, item.altura, 14);
+      ctx.clip();
       ctx.fillStyle = "#8B5CF6";
-      ctx.fillRect(72, y, 5, item.altura);
-      escrever(
-        item.sessao.inicio +
-          " – " +
-          item.sessao.fim +
-          "  ·  PALCO " +
-          item.sessao.palco,
-        108,
-        y + 38,
-        "bold 22px Arial",
+      ctx.fillRect(224, yi, 6, item.altura);
+      ctx.restore();
+
+      pilula(
+        260,
+        yi + 22,
+        "PALCO " + item.sessao.palco,
+        17,
+        30,
         "#C4B5FD",
+        "rgba(139,92,246,0.18)",
+        "rgba(196,181,253,0.45)",
       );
-      var linhaY = y + 80;
+      var linhaY = yi + 88;
       item.titulo.forEach(function (linha) {
-        escrever(linha, 108, linhaY, "bold 30px Arial", "#F4F0FA");
+        escrever(linha, 260, linhaY, letra("bold", 30), "#F4F0FA");
         linhaY += 38;
       });
       item.pessoa.forEach(function (linha) {
-        escrever(linha, 108, linhaY, "24px Arial", "#B3A6CC");
+        escrever(linha, 260, linhaY, letra("", 24), "#B3A6CC");
         linhaY += 32;
       });
       item.nota.forEach(function (linha) {
-        escrever(linha, 108, linhaY, "20px Arial", "#B3A6CC");
+        escrever(linha, 260, linhaY, letra("", 20), "#B3A6CC");
         linhaY += 28;
       });
-      y += item.altura + 18;
     });
+
+    // ── Rodapé ─────────────────────────────────────────────
     escrever(
       "Bora aprender e se encontrar por lá?",
       72,
       y + 34,
-      "bold 28px Arial",
+      letra("bold", 28),
       "#C4B5FD",
     );
     escrever(
       "Programação preliminar · Horários de Brasília · Não reserva lugar",
       72,
       y + 74,
-      "20px Arial",
+      letra("", 20),
       "#B3A6CC",
     );
     escrever(
       "awsstudentcommunitydays.com.br/belo-horizonte/",
       72,
       y + 110,
-      "22px Arial",
+      letra("", 22),
       "#F4F0FA",
     );
   }
