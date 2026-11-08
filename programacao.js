@@ -299,6 +299,17 @@
     return (peso ? peso + " " : "") + tamanho + "px " + LETRA;
   }
 
+  // Brasão do grupo (dados.js: brasao). Aparece na imagem assim que carregar.
+  var brasao = null;
+  if (edicao.brasao) {
+    var imagemBrasao = new Image();
+    imagemBrasao.onload = function () {
+      brasao = imagemBrasao;
+      atualizar();
+    };
+    imagemBrasao.src = encodeURI(edicao.brasao);
+  }
+
   function gerarImagem(lista) {
     var ctx = canvas.getContext("2d");
     if (!ctx) throw new Error("Canvas indisponível");
@@ -330,11 +341,23 @@
       );
     });
 
+    // Medidas do layout (em px, imagem de 1080 de largura)
+    var largura = 1080;
+    var margem = 72;
+    var quadroX = margem; // quadro do horário (esquerda)
+    var quadroL = 272;
+    var cardX = 370; // card da palestra (direita)
+    var cardL = largura - margem - cardX;
+    var textoX = cardX + 34;
+    var textoL = cardL - 34 - 28;
+    var topoGrade = 232;
+    var espaco = 20; // espaço entre as linhas
+
     var itens = lista
       .map(function (s) {
-        var titulo = linhas(s.titulo, letra("bold", 30), 700);
-        var pessoa = linhas(s.pessoa, letra("", 24), 700);
-        var nota = s.nota ? linhas(s.nota, letra("", 20), 700) : [];
+        var titulo = linhas(s.titulo, letra("bold", 27), textoL);
+        var pessoa = linhas(s.pessoa, letra("", 22), textoL);
+        var nota = s.nota ? linhas(s.nota, letra("", 19), textoL) : [];
         return {
           pausa: false,
           inicio: s.inicio,
@@ -344,7 +367,7 @@
           pessoa: pessoa,
           nota: nota,
           altura:
-            88 + titulo.length * 38 + pessoa.length * 32 + nota.length * 28,
+            44 + titulo.length * 34 + pessoa.length * 30 + nota.length * 26,
         };
       })
       .concat(
@@ -354,7 +377,7 @@
             inicio: b.inicio,
             fim: b.fim,
             titulo: b.titulo,
-            altura: 40,
+            altura: 44,
           };
         }),
       )
@@ -362,30 +385,29 @@
         return a.inicio < b.inicio ? -1 : a.inicio > b.inicio ? 1 : 0;
       });
 
-    var largura = 1080;
-    var topoGrade = 326;
-    var altura =
-      topoGrade +
-      itens.reduce(function (soma, item) {
-        return soma + item.altura + 18;
-      }, 0) +
-      152;
+    var y = topoGrade;
+    itens.forEach(function (item) {
+      item.y = y;
+      y += item.altura + espaco;
+    });
+    var rodape = brasao ? 290 : 160;
+    var altura = y + rodape;
     canvas.width = largura;
     canvas.height = altura;
 
-    function escrever(texto, x, y, fonte, cor) {
+    function escrever(texto, x, yy, fonte, cor) {
       ctx.font = fonte;
       ctx.fillStyle = cor;
-      ctx.fillText(texto, x, y);
+      ctx.fillText(texto, x, yy);
     }
     // Retângulo com cantos arredondados
-    function caixa(x, y, w, h, r) {
+    function caixa(x, yy, w, h, r) {
       ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + w, y, x + w, y + h, r);
-      ctx.arcTo(x + w, y + h, x, y + h, r);
-      ctx.arcTo(x, y + h, x, y, r);
-      ctx.arcTo(x, y, x + w, y, r);
+      ctx.moveTo(x + r, yy);
+      ctx.arcTo(x + w, yy, x + w, yy + h, r);
+      ctx.arcTo(x + w, yy + h, x, yy + h, r);
+      ctx.arcTo(x, yy + h, x, yy, r);
+      ctx.arcTo(x, yy, x + w, yy, r);
       ctx.closePath();
     }
     // Etiqueta arredondada com texto; devolve a largura
@@ -407,51 +429,80 @@
       );
       return w;
     }
+    // Brasão centralizado em (cx, cy), cabendo numa caixa quadrada de lado "lado"
+    function desenharBrasao(cx, cy, lado) {
+      if (!brasao) return;
+      var halo = ctx.createRadialGradient(cx, cy, 0, cx, cy, lado * 0.9);
+      halo.addColorStop(0, "rgba(139,92,246,0.28)");
+      halo.addColorStop(1, "rgba(139,92,246,0)");
+      ctx.fillStyle = halo;
+      ctx.fillRect(cx - lado, cy - lado, lado * 2, lado * 2);
+      var e = Math.min(lado / brasao.naturalWidth, lado / brasao.naturalHeight);
+      var w = brasao.naturalWidth * e;
+      var h = brasao.naturalHeight * e;
+      ctx.drawImage(brasao, cx - w / 2, cy - h / 2, w, h);
+    }
 
-    // ── Fundo ──────────────────────────────────────────────
-    ctx.fillStyle = "#07050C";
+    // ── Fundo em degradê (roxo escuro no topo, quase preto embaixo) ──
+    var degrade = ctx.createLinearGradient(0, 0, 0, altura);
+    degrade.addColorStop(0, "#170D2E");
+    degrade.addColorStop(0.4, "#0C0818");
+    degrade.addColorStop(1, "#07050C");
+    ctx.fillStyle = degrade;
     ctx.fillRect(0, 0, largura, altura);
-
-    // Brilhos suaves de roxo (dão profundidade sem precisar de imagem)
     var brilho1 = ctx.createRadialGradient(
-      largura - 120,
-      150,
+      largura - 100,
+      120,
       0,
-      largura - 120,
-      150,
-      560,
+      largura - 100,
+      120,
+      620,
     );
-    brilho1.addColorStop(0, "rgba(139,92,246,0.32)");
+    brilho1.addColorStop(0, "rgba(139,92,246,0.30)");
     brilho1.addColorStop(1, "rgba(139,92,246,0)");
     ctx.fillStyle = brilho1;
     ctx.fillRect(0, 0, largura, altura);
     var brilho2 = ctx.createRadialGradient(
       0,
-      altura * 0.65,
+      altura * 0.62,
       0,
       0,
-      altura * 0.65,
-      620,
+      altura * 0.62,
+      640,
     );
-    brilho2.addColorStop(0, "rgba(232,121,249,0.10)");
+    brilho2.addColorStop(0, "rgba(232,121,249,0.09)");
     brilho2.addColorStop(1, "rgba(232,121,249,0)");
     ctx.fillStyle = brilho2;
     ctx.fillRect(0, 0, largura, altura);
 
-    ctx.fillStyle = "#8B5CF6";
-    ctx.fillRect(0, 0, largura, 14);
-
-    // ── Cabeçalho ──────────────────────────────────────────
-    escrever("AWS STUDENT COMMUNITY DAY", 72, 78, letra("bold", 24), "#C4B5FD");
-    escrever("Minha programação em BH", 72, 146, letra("bold", 48), "#F4F0FA");
+    // ── Cabeçalho em duas colunas ──────────────────────────
+    var colunaDireita = 790;
     escrever(
-      A.dataLonga(edicao.data) + " · Belo Horizonte",
-      72,
-      194,
-      letra("", 26),
+      "AWS Student Community Day",
+      margem,
+      88,
+      letra("bold", 34),
+      "#F4F0FA",
+    );
+    escrever(
+      A.dataLonga(edicao.data) + " - BH",
+      margem,
+      124,
+      letra("", 21),
       "#C4B5FD",
     );
-    escrever(edicao.local, 72, 234, letra("", 24), "#B3A6CC");
+    ctx.textAlign = "center";
+    escrever(
+      "Minha programação",
+      colunaDireita,
+      88,
+      letra("bold", 34),
+      "#F4F0FA",
+    );
+    escrever(edicao.local, colunaDireita, 124, letra("", 21), "#C4B5FD");
+    ctx.textAlign = "left";
+
+    // Resumo e organização
     var palcos = new Set(
       lista.map(function (s) {
         return s.palco;
@@ -463,9 +514,9 @@
       " · " +
       palcos +
       (palcos === 1 ? " palco" : " palcos");
-    pilula(
-      72,
-      262,
+    var larguraResumo = pilula(
+      margem,
+      156,
       resumo,
       22,
       42,
@@ -473,116 +524,133 @@
       "rgba(139,92,246,0.18)",
       "rgba(196,181,253,0.55)",
     );
+    if (edicao.organizador) {
+      var rotulo = "Organizado por ";
+      var xOrg = margem + larguraResumo + 22;
+      ctx.font = letra("", 22);
+      var larguraRotulo = ctx.measureText(rotulo).width;
+      escrever(rotulo, xOrg, 185, letra("", 22), "#B3A6CC");
+      escrever(
+        edicao.organizador,
+        xOrg + larguraRotulo,
+        185,
+        letra("bold", 22),
+        "#F4F0FA",
+      );
+    }
 
-    // ── Linha do tempo ─────────────────────────────────────
-    var linhaX = 196;
-    var y = topoGrade;
-    itens.forEach(function (item) {
-      item.y = y;
-      y += item.altura + 18;
-    });
-    var primeiroItem = itens[0];
-    var ultimoItem = itens[itens.length - 1];
-    ctx.strokeStyle = "rgba(139,92,246,0.40)";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(linhaX, primeiroItem.y + 38);
-    ctx.lineTo(linhaX, ultimoItem.y + (ultimoItem.pausa ? 20 : 38));
-    ctx.stroke();
-
+    // ── Linhas: quadro do horário + card da palestra ───────
+    var fundoCaixa = "rgba(22,15,38,0.86)";
+    var bordaCaixa = "rgba(139,92,246,0.55)";
     itens.forEach(function (item) {
       var yi = item.y;
 
       if (item.pausa) {
+        var rotuloPausa = item.titulo + " · " + item.inicio + " – " + item.fim;
+        ctx.font = letra("", 20);
+        var lp = ctx.measureText(rotuloPausa).width;
+        var meio = largura / 2;
+        var yLinha = yi + item.altura / 2;
+        ctx.strokeStyle = "rgba(139,92,246,0.35)";
+        ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.arc(linhaX, yi + 20, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "#7A66A8";
-        ctx.fill();
-        escrever(item.inicio, 72, yi + 27, letra("", 20), "#8878A6");
-        escrever(
-          item.titulo + " · até " + item.fim,
-          224,
-          yi + 27,
-          letra("", 22),
-          "#B3A6CC",
-        );
+        ctx.moveTo(margem, yLinha);
+        ctx.lineTo(meio - lp / 2 - 18, yLinha);
+        ctx.moveTo(meio + lp / 2 + 18, yLinha);
+        ctx.lineTo(largura - margem, yLinha);
+        ctx.stroke();
+        ctx.textAlign = "center";
+        escrever(rotuloPausa, meio, yLinha + 7, letra("", 20), "#B3A6CC");
+        ctx.textAlign = "left";
         return;
       }
 
-      // Horário na coluna da esquerda
-      escrever(item.inicio, 72, yi + 50, letra("bold", 32), "#F4F0FA");
-      escrever("até " + item.fim, 72, yi + 78, letra("", 20), "#B3A6CC");
-      // Ponto na linha do tempo
-      ctx.beginPath();
-      ctx.arc(linhaX, yi + 38, 12, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(139,92,246,0.25)";
+      // Quadro do horário (esquerda)
+      caixa(quadroX, yi, quadroL, item.altura, 12);
+      ctx.fillStyle = fundoCaixa;
       ctx.fill();
-      ctx.beginPath();
-      ctx.arc(linhaX, yi + 38, 6, 0, Math.PI * 2);
-      ctx.fillStyle = "#C4B5FD";
-      ctx.fill();
-
-      // Card
-      caixa(224, yi, 784, item.altura, 14);
-      ctx.fillStyle = "rgba(25,17,40,0.9)";
-      ctx.fill();
-      ctx.strokeStyle = "rgba(139,92,246,0.45)";
+      ctx.strokeStyle = bordaCaixa;
       ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.save();
-      caixa(224, yi, 784, item.altura, 14);
-      ctx.clip();
-      ctx.fillStyle = "#8B5CF6";
-      ctx.fillRect(224, yi, 6, item.altura);
-      ctx.restore();
-
+      var centroX = quadroX + quadroL / 2;
+      var topoBloco = yi + (item.altura - 80) / 2;
+      ctx.textAlign = "center";
+      escrever(
+        item.inicio + " – " + item.fim,
+        centroX,
+        topoBloco + 30,
+        letra("bold", 30),
+        "#F4F0FA",
+      );
+      ctx.textAlign = "left";
+      var rotuloPalco = "PALCO " + item.sessao.palco;
+      ctx.font = letra("bold", 17);
+      var larguraPalco = ctx.measureText(rotuloPalco).width + 30;
       pilula(
-        260,
-        yi + 22,
-        "PALCO " + item.sessao.palco,
+        centroX - larguraPalco / 2,
+        topoBloco + 50,
+        rotuloPalco,
         17,
         30,
         "#C4B5FD",
         "rgba(139,92,246,0.18)",
         "rgba(196,181,253,0.45)",
       );
-      var linhaY = yi + 88;
+
+      // Card da palestra (direita)
+      caixa(cardX, yi, cardL, item.altura, 12);
+      ctx.fillStyle = fundoCaixa;
+      ctx.fill();
+      ctx.strokeStyle = bordaCaixa;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.save();
+      caixa(cardX, yi, cardL, item.altura, 12);
+      ctx.clip();
+      ctx.fillStyle = "#8B5CF6";
+      ctx.fillRect(cardX, yi, 6, item.altura);
+      ctx.restore();
+
+      var linhaY = yi + 44;
       item.titulo.forEach(function (linha) {
-        escrever(linha, 260, linhaY, letra("bold", 30), "#F4F0FA");
-        linhaY += 38;
+        escrever(linha, textoX, linhaY, letra("bold", 27), "#F4F0FA");
+        linhaY += 34;
       });
       item.pessoa.forEach(function (linha) {
-        escrever(linha, 260, linhaY, letra("", 24), "#B3A6CC");
-        linhaY += 32;
+        escrever(linha, textoX, linhaY, letra("", 22), "#B3A6CC");
+        linhaY += 30;
       });
       item.nota.forEach(function (linha) {
-        escrever(linha, 260, linhaY, letra("", 20), "#B3A6CC");
-        linhaY += 28;
+        escrever(linha, textoX, linhaY, letra("", 19), "#B3A6CC");
+        linhaY += 26;
       });
     });
 
-    // ── Rodapé ─────────────────────────────────────────────
+    // ── Rodapé centralizado, com o brasão embaixo ──────────
+    ctx.textAlign = "center";
     escrever(
       "Bora aprender e se encontrar por lá?",
-      72,
-      y + 34,
+      largura / 2,
+      y + 36,
       letra("bold", 28),
       "#C4B5FD",
     );
     escrever(
       "Programação preliminar · Horários de Brasília · Não reserva lugar",
-      72,
-      y + 74,
-      letra("", 20),
+      largura / 2,
+      y + 76,
+      letra("", 19),
       "#B3A6CC",
     );
     escrever(
       "awsstudentcommunitydays.com.br/belo-horizonte/",
-      72,
-      y + 110,
+      largura / 2,
+      y + 112,
       letra("", 22),
       "#F4F0FA",
     );
+    ctx.textAlign = "left";
+    desenharBrasao(largura / 2, y + 205, 110);
   }
 
   function atualizar(mensagem) {

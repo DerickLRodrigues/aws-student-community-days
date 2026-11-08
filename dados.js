@@ -227,6 +227,8 @@ window.EDICOES = [
       }
     ],
 
+        brasao: '../assets/belo-horizonte/brasao - awssbgbh.png',
+        
     // null = usa TRILHAS_PADRAO.
     trilhas: null,
 
