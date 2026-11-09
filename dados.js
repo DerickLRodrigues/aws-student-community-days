@@ -272,6 +272,7 @@ window.EDICOES = [
       { inicio: '16:10', fim: '16:50', tipo: 'Keynote', sessoes: [
         { id: 'encerramento', palco: 1, titulo: 'A Definir', pessoa: 'Paloma Lataliza', nota: 'Keynote de encerramento' , foto: '../assets/belo-horizonte/palestrantes/Paloma.jpeg', linkedin:'https://www.linkedin.com/in/palomalataliza/', bio:'Paloma é Senior Cloud Engineer na Caylent, formada em Ciência da Computação pela FUMEC, pós-graduada em Cloud Computing pela PUC Minas e mestranda em TICGC. AWS HERO, lidera o AWS User Group BH, é Embaixadora do Women Techmakers e cofundadora do projeto Mulheres na Nuvem MG. Também organizou o primeiro AWSomeWomenCommunity Summit Brasil e atua incentivando a participação feminina na tecnologia e na computação em nuvem. Entusiasta de containers, é apaixonada por compartilhar conhecimento e fã de Cavaleiros do Zodíaco.' }
       ] },
+      { inicio: '16:50', fim: '17:00', tipo: 'Plenária', titulo: 'Encerramento e agradecimentos', local: 'Todos no palco 1' }
     ],
     palestrantes: []
   }
