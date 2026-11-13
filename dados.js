@@ -243,7 +243,7 @@ window.EDICOES = [
         { id: 'abertura', palco: 1, titulo: 'Construa seu primeiro aplicativo gratuitamente na nuvem', pessoa: 'Ramsés Mata', nota: 'Keynote de abertura', foto: '../assets/belo-horizonte/palestrantes/Ramses Mata.jpg', linkedin:'https://www.linkedin.com/in/ramses-mata/', bio:'Associate Developer Advocate, Ramsés vai conduzir uma jornada prática e descontraída para quem quer começar a construir com a AWS' }
       ] },
       { inicio: '10:30', fim: '11:05', tipo: 'Palestras', sessoes: [
-        { id: 'arcelormittal', palco: 1, titulo: 'ArcelorMittal · carreira, estágio e trainee', pessoa: 'Representante a confirmar', nota: 'Título a confirmar' },
+        { id: 'arcelormittal', palco: 1, titulo: 'ArcelorMittal · carreira, estágio e trainee', pessoa: 'Bruna do Carmo', nota: 'Carreiras' },
         { id: 'durable-functions', palco: 2, titulo: 'Orquestrações Stateful com AWS Lambda Durable Functions', pessoa: 'Phillip Prudêncio',  foto: '../assets/belo-horizonte/palestrantes/Phillip Prudencio.jpg', linkedin:'https://www.linkedin.com/in/phillip-prudencio/', bio:'Tech Lead em Engenharia de Plataforma Cloud no Itaú Unibanco, especialista em arquitetura, redes e serviços AWS. Possui mais de 15 anos de experiência em tecnologia, 12 certificações AWS, o reconhecimento AWS Golden Jacket e atua como AWS Community Builder. Também é mentor, palestrante e criador do Método AWS 30D®.' }
       ] },
       { inicio: '11:10', fim: '11:45', tipo: 'Palestras', sessoes: [
